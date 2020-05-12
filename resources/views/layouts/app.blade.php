@@ -17,7 +17,8 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/{{ session('theme', 'superhero') }}/bootstrap.min.css" rel="stylesheet">
+    <!--link href="{/ { asset('css/app.css') } /}" rel="stylesheet"-->
 </head>
 <body>
     <div id="app">
@@ -60,6 +61,11 @@
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
+                                    @can('manage-users')
+                                    <a class="dropdown-item" href="{{ route('admin.users.index') }}">
+                                    User Management
+                                    </a>
+                                    @endcan
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
@@ -73,6 +79,7 @@
         </nav>
 
         <main class="py-4">
+            Contenido<br />
             @yield('content')
         </main>
     </div>
