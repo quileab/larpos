@@ -43,3 +43,5 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:mana
         ['except' => ['show', 'create', 'store']]
     );
 });
+
+Route::get('/prods', 'ProductController@index')->name('products');
