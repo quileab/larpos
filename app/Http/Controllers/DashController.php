@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
-class HomeController extends Controller
+class DashController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -24,7 +24,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        Alert::toast('You are Welcome', 'info');
-        return view('home');
+        Alert::toast('Welcome', 'info');
+        return view('dashboard');
     }
 }

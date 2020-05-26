@@ -14,7 +14,11 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    <h5>{{ Auth::user()->name }}</h5> assigned to <strong>{{ Auth::user()->warehouse->name }}</strong> Warehouse
+                                    @if (Session::has('WH'))
+                    {{{ Session::get('WH') }}}
+                @endif
+
                 </div>
             </div>
         </div>

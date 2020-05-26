@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
-                <div class="card-header">Products</div>
+                <div class="card-header">Warehouses - Products Quantities</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -18,19 +18,19 @@
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Brand</th>
-      <th scope="col">Description</th>
-      <th scope="col">Unit</th>
+      <th scope="col">Warehouse</th>
+      <th scope="col">Brand-Description</th>
+      <th scope="col">Qty's</th>
       <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
-@foreach ($products as $product)
+@foreach ($prodqtys as $qtys)
 <tr>
-    <th scope="row">{{ $product->id }}</th>
-    <td>{{ $product->brand }}</td>
-    <td>{{ $product->description }}</td>
-    <td>{{ $product->unit->unit }}</td>
+    <th scope="row">{{ $qtys->id }}</th>
+    <td>{{ $qtys->warehouse->name }}</td>
+    <td>{{ $qtys->product->brand }} : {{ $qtys->product->description }}</td>
+    <td>{{ $qtys->quantity }}</td>
     <td>
         <a class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
         <a class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
@@ -40,7 +40,7 @@
 @endforeach
     </tbody>
 </table>
-{{ $products->links() }}
+{{ $prodqtys->links() }}
                 </div>
             </div>
         </div>

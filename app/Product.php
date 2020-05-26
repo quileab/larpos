@@ -15,12 +15,12 @@ class Product extends Model
     {
         return $this->belongsToMany(Warehouse::class);
     }
-
+    */
     public function unit()
     {
         return $this->belongsTo('App\Unit');
     }
-
+    /*
     public function quantity()
     {
         return $this->belongsTo('App\product_quantity');

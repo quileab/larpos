@@ -2,7 +2,7 @@
 
 use App\Warehouse;
 use App\Product;
-use App\product_quantity;
+use App\Whprodquantity;
 use Illuminate\Database\Seeder;
 
 class WarehouseProductsTableSeeder extends Seeder
@@ -106,8 +106,8 @@ class WarehouseProductsTableSeeder extends Seeder
         $product->discount = 5;
         $product->save();
 
-        product_quantity::truncate();
-        $product_quantity = new product_quantity();
+        Whprodquantity::truncate();
+        $product_quantity = new Whprodquantity();
         $product_quantity->warehouse_id = 1;
         $product_quantity->product_id = 3;
         $product_quantity->quantity = 100;
@@ -115,7 +115,7 @@ class WarehouseProductsTableSeeder extends Seeder
         $product_quantity->qtymax = 200;
         $product_quantity->save();
 
-        $product_quantity = new product_quantity();
+        $product_quantity = new Whprodquantity();
         $product_quantity->warehouse_id = 1;
         $product_quantity->product_id = 2;
         $product_quantity->quantity = 59;
@@ -125,7 +125,7 @@ class WarehouseProductsTableSeeder extends Seeder
         $product_quantity->warehouse_id = 1;
         $product_quantity->product_id = 1;
 
-        $product_quantity = new product_quantity();
+        $product_quantity = new Whprodquantity();
         $product_quantity->warehouse_id = 1;
         $product_quantity->product_id = 3;
         $product_quantity->quantity = 60;
@@ -133,7 +133,7 @@ class WarehouseProductsTableSeeder extends Seeder
         $product_quantity->qtymax = 250;
         $product_quantity->save();
 
-        $product_quantity = new product_quantity();
+        $product_quantity = new Whprodquantity();
         $product_quantity->warehouse_id = 1;
         $product_quantity->product_id = 4;
         $product_quantity->quantity = 80;
@@ -141,7 +141,7 @@ class WarehouseProductsTableSeeder extends Seeder
         $product_quantity->qtymax = 300;
         $product_quantity->save();
 
-        $product_quantity = new product_quantity();
+        $product_quantity = new Whprodquantity();
         $product_quantity->warehouse_id = 2;
         $product_quantity->product_id = 1;
         $product_quantity->quantity = 60;
@@ -149,7 +149,7 @@ class WarehouseProductsTableSeeder extends Seeder
         $product_quantity->qtymax = 250;
         $product_quantity->save();
 
-        $product_quantity = new product_quantity();
+        $product_quantity = new Whprodquantity();
         $product_quantity->warehouse_id = 3;
         $product_quantity->product_id = 2;
         $product_quantity->quantity = 80;

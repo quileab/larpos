@@ -17,8 +17,10 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/{{ session('theme', 'superhero') }}/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/{{ session('theme', 'darkly') }}/bootstrap.min.css" rel="stylesheet">
     <!--link href="{/ { asset('css/app.css') } /}" rel="stylesheet"-->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
 </head>
 <body>
     @include('sweetalert::alert')
@@ -35,7 +37,6 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -78,10 +79,12 @@
                 </div>
             </div>
         </nav>
-
-        <main class="py-4">
+        <main class="py-4 container-fluid">
+            @include('layouts\sidebar')
             @include('partials.alerts')
+            <div class="content">
             @yield('content')
+            </div>
         </main>
     </div>
 </body>

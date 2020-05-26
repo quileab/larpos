@@ -22,7 +22,7 @@ Route::get('/', function () {
 // routes() creates all needed CRUD routes for Auth
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dashboard', 'DashController@index')->name('dashboard');
 
 // the next Route will handle
 // Permissions in App\Http\Controller\Admin\UserController
@@ -44,4 +44,10 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:mana
     );
 });
 
-Route::get('/prods', 'ProductController@index')->name('products');
+Route::get('/products', 'ProductController@index')->name('products');
+Route::get('/warehouses', 'WarehouseController@index')->name('warehouses');
+Route::get('/wareselect/{id}', function ($id) {
+    session(['WH' => $id]);
+    return view('dashboard');
+});
+Route::get('/prodqtys', 'WhprodquantityController@index')->name('prodqtys');
