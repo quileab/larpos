@@ -46,8 +46,5 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:mana
 
 Route::get('/products', 'ProductController@index')->name('products');
 Route::get('/warehouses', 'WarehouseController@index')->name('warehouses');
-Route::get('/wareselect/{id}', function ($id) {
-    session(['WH' => $id]);
-    return view('dashboard');
-});
+Route::get('/wareselect/{id}', 'WarehouseController@wareselect')->name('wareselect');
 Route::get('/prodqtys', 'WhprodquantityController@index')->name('prodqtys');

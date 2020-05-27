@@ -34,6 +34,10 @@
             <a class="btn btn-default" href="/prodqtys">
             <i class="fas fa-cubes"></i> Manage Qty's</a>
         </li>
+        <li class="{{ Request::is('prodqtys') ? 'active' : '' }} list-group-item list-group-item-action">
+            <a class="btn btn-default" href="/prodqtys">
+            <i class="fas fa-cubes"></i> Manage Qty's</a>
+        </li>
     </ul>
     @endguest
     </nav>

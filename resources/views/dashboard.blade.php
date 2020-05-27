@@ -15,9 +15,11 @@
                     @endif
 
                     <h5>{{ Auth::user()->name }}</h5> assigned to <strong>{{ Auth::user()->warehouse->name }}</strong> Warehouse
-                                    @if (Session::has('WH'))
-                    {{{ Session::get('WH') }}}
-                @endif
+                        <p class="text-warning">Overriden by:
+                    @if (Session::has('WH'))
+                        ({{{ Session::get('WH') }}}) {{{ Session::get('warehouse') }}}
+                    @endif
+                        </p>
 
                 </div>
             </div>
