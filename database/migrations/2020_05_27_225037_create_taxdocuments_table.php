@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTaxconditionsTable extends Migration
+class CreateTaxdocumentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateTaxconditionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('taxconditions', function (Blueprint $table) {
-            $table->id();
-            $table->string('description');
+        Schema::create('taxdocuments', function (Blueprint $table) {
+            $table->unsignedSmallInteger('id')->unique()->primary();
+            $table->string('description')->nullable();
+            $table->unsignedSmallInteger('order')->default(999)->index();
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreateTaxconditionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('taxconditions');
+        Schema::dropIfExists('taxdocuments');
     }
 }

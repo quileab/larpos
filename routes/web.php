@@ -48,3 +48,4 @@ Route::get('/products', 'ProductController@index')->name('products');
 Route::get('/warehouses', 'WarehouseController@index')->name('warehouses');
 Route::get('/wareselect/{id}', 'WarehouseController@wareselect')->name('wareselect');
 Route::get('/prodqtys', 'WhprodquantityController@index')->name('prodqtys');
+Route::get('/clients', 'ClientController@edit')->name('clients');
