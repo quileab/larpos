@@ -24,7 +24,6 @@ class DashController extends Controller
      */
     public function index(Request $request)
     {
-        Alert::toast('Welcome', 'info');
         return view('dashboard');
     }
 }

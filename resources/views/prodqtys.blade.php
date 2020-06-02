@@ -32,9 +32,11 @@
     <td>{{ $qtys->product->brand }} : {{ $qtys->product->description }}</td>
     <td>{{ $qtys->quantity }}</td>
     <td>
+        <div class="btn-group" role="group" aria-label="Actions">
         <a class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
         <a class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
         <a class="btn btn-sm btn-success"><i class="fas fa-check-circle"></i></a>
+        </div>
     </td>
 </tr>
 @endforeach

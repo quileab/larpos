@@ -15,12 +15,19 @@
                     @endif
 
                     <h5>{{ Auth::user()->name }}</h5> assigned to <strong>{{ Auth::user()->warehouse->name }}</strong> Warehouse
-                        <p class="text-warning">Overriden by:
                     @if (Session::has('WH'))
-                        ({{{ Session::get('WH') }}}) {{{ Session::get('warehouse') }}}
-                    @endif
+                        <p class="text-warning">Overriden by:
+                        <small>({{{ Session::get('WH') }}})</small> {{{ Session::get('warehouse') }}}
+                                &nbsp;<a class="btn btn-sm btn-warning"
+                                href="waredeselect">
+                                &nbsp;<i class="fas fa-eye-slash">&nbsp;</i></a>
                         </p>
-
+                    @endif
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

@@ -114,7 +114,6 @@ class UsersController extends Controller
         $user->roles()->detach();
         $user->delete();
 
-        Alert::alert('Title', 'Message', 'Type');
         return redirect()->route('admin.users.index');
     }
 }

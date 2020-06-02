@@ -24,7 +24,7 @@ class CreateClientsTable extends Migration
             $table->tinyInteger('taxcond')->nullable();
             $table->string('phones', 30)->nullable();
             $table->string('group', 2)->nullable();
-            $table->string('taxid', 11); // cuit
+            $table->string('taxid', 11)->nullable(); // cuit
             $table->string('email', 127);
             $table->timestamps();
         });
