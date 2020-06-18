@@ -5,7 +5,16 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
-                <div class="card-header">Persons</div>
+                <div class="card-header">
+                <div class="row">
+                        <div class="col-4"><h4>Clients</h4></div>
+                        <div class="col-6">search:</div>
+                        <div class="col-2">
+                            <a href="{{route('clients.create')}}"
+                            class="btn btn-success btn-sm btn-block"><i class="fas fa-plus"></i></a>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -33,7 +42,7 @@
     <td>
         <div class="btn-group" role="group" aria-label="Actions">
         <a class="btn btn-sm btn-primary"
-            href="edit/{{ $item->id }}">
+            href="clients/{{ $item->id }}/edit">
             <i class="fas fa-edit"></i></a>
         <a class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
         <a class="btn btn-sm btn-success"

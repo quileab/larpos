@@ -14,9 +14,21 @@ class ClientController extends Controller
         return view('persons.index', compact('data'));
     }
 
-    public function edit(Request $request)
+    // To create a new warehouse
+    public function create()
     {
+        $data = new Client();
         $taxcondition = taxcondition::all();
-        return view('persons.create', compact('taxcondition'));
+        return view('persons.createedit', compact('data'), compact('taxcondition'));
     }
+
+    // To update an existing warehouse (load to edit)
+    public function edit($id)
+    {
+        $data = Client::find($id);
+        $taxcondition = taxcondition::all();
+        // Load user/createOrUpdate.blade.php view
+        return view('persons.createedit', compact('data'),compact('taxcondition'));
+    }
+
 }

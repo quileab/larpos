@@ -16,14 +16,14 @@ class WarehouseController extends Controller
         return view('warehouses.index', compact('warehouses'));
     }
 
-    // To create a new user
+    // To create a new warehouse
     public function create()
     {
         $data = new Warehouse();
         return view('warehouses.createedit', compact('data'));
     }
 
-    // To update an existing user (load to edit)
+    // To update an existing warehouse (load to edit)
     public function edit($id)
     {
         $data = Warehouse::find($id);
