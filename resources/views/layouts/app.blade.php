@@ -18,12 +18,21 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/{{ session('theme', 'darkly') }}/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/{{ session('theme', 'slate') }}/bootstrap.min.css" rel="stylesheet">
     <!--link href="{/ { asset('css/app.css') } /}" rel="stylesheet"-->
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
 </head>
+<style>
+    li>a, li>a:hover{
+    text-decoration: none;
+     display: block;
+     width: 100%;
+     height: 100%;
+    }
+</style>
 <body>
+
     @include('sweetalert::alert')
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
@@ -31,6 +40,15 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
+
+                @auth
+                {{ Auth::user()->warehouse->name }}
+                @endauth
+                    @if (Session::has('WH'))
+                    &nbsp;<i class="fas fa-random text-warning"></i>&nbsp;
+                        {{{ Session::get('warehouse') }}}&nbsp;<small>({{{ Session::get('WH') }}})</small> 
+                    @endif
+
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>

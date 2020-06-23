@@ -20,10 +20,15 @@ class Product extends Model
     {
         return $this->belongsTo('App\Unit');
     }
-    /*
+
+    public function warehouse()
+    {
+        return $this->belongsTo('App\Warehouse');
+    }
+
     public function quantity()
     {
-        return $this->belongsTo('App\product_quantity');
+        
+        return $this->belongsTo('App\Whprodquantity');
     }
-    */
 }

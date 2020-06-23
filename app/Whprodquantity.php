@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Whprodquantity extends Model
 {
+    protected $fillable = [
+        'warehouse_id', 'product_id', 'quantity', 'qtymin','qtymax'
+    ];
+
     //
     public function product()
     {

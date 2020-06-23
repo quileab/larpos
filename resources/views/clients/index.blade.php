@@ -6,9 +6,22 @@
         <div class="col-md-10">
             <div class="card">
                 <div class="card-header">
-                <div class="row">
+                    <div class="row">
                         <div class="col-4"><h4>Clients</h4></div>
-                        <div class="col-6">search:</div>
+                        <div class="col-6">
+
+                        <form action="{{ route('clients.search') }}" method="get" spellcheck="false">
+                        <div class="input-group md-form form-sm form-2">
+                            <input class="form-control" type="search" name="search" placeholder="Buscar" aria-label="Search">
+                        <div class="input-group-append">
+                        <button class="input-group-text btn btn-success" type="submit">
+                            <i class="fas fa-search" aria-hidden="true"></i>
+                        </button>
+                        </div>
+                        </div>
+                        </form>
+
+                        </div>
                         <div class="col-2">
                             <a href="{{route('clients.create')}}"
                             class="btn btn-success btn-sm btn-block"><i class="fas fa-plus"></i></a>
@@ -44,9 +57,14 @@
         <a class="btn btn-sm btn-primary"
             href="clients/{{ $item->id }}/edit">
             <i class="fas fa-edit"></i></a>
-        <a class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+        <a href="{{ route('clients.destroy', [$item->id])}}" title="{{ $item->fullname }}"
+            class="btn btn-sm btn-danger btn-delete"
+            csrf-token='{{csrf_field()}}'
+            ><i class="fas fa-trash"></i>
+        </a>
+
         <a class="btn btn-sm btn-success"
-            href="persons.select/{{ $item->id }}">
+            href="{{ route('clients.select', [$item->id])}}">
             <i class="fas fa-check-circle"></i></a>
         </div>
     </td>
