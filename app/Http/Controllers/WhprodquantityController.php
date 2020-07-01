@@ -51,8 +51,16 @@ class WhprodquantityController extends Controller
             'qtymax' => 'nullable',
         ]);
 
-        $whqty->update($request->all());
-        Alert::toast('Updated Successfully', 'success');
+        //$whqty->update($request->all());// no funcionó
+        $whqty->where('id',$request->id)->update(
+            [
+            'quantity'=>$request->quantity,
+            'qtymin'=>$request->qtymin,
+            'qtymax'=>$request->qtymax,
+            ]
+        );
+
+        Alert::toast('Quantity Updated Successfully', 'success');
         return redirect()->route('products.index')
             ->with('message', 'Quantity updated successfully');
     }
@@ -63,5 +71,4 @@ class WhprodquantityController extends Controller
         $whqty = Whprodquantity::findOrFail($id);
         $whqty->delete();
     }
-
 }

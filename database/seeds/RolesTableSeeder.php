@@ -52,12 +52,12 @@ class RolesTableSeeder extends Seeder
         ]);
         client::create([
             'idtype' => 'DNI',
-            'idnumber' => '88000333',
+            'idnumber' => '88000444',
             'fullname' => 'Catedral, Agosto',
             'city' => 'Reconquista',
             'address' => 'Sarmiento 9999',
             'taxcond' => 1,
-            'phones' => '3482333333',
+            'phones' => '3482333444',
             'email' => 'catedralago@gmail.com',
         ]);
     }

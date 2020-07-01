@@ -11,6 +11,7 @@ class Whprodquantity extends Model
     ];
 
     //
+
     public function product()
     {
         return $this->belongsTo('App\Product');
@@ -19,4 +20,5 @@ class Whprodquantity extends Model
     {
         return $this->belongsTo('App\Warehouse');
     }
+
 }

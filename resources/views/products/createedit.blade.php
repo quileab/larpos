@@ -131,7 +131,7 @@
                     <div class="float-right">
                         <button type="submit" class="btn btn-primary"> <i class="fas fa-save"></i> </button>
                     </div>
-
+        </form>
                 </div>
             </div>
         </div>

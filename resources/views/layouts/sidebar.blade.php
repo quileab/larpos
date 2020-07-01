@@ -1,4 +1,4 @@
-<div class="sidebar float-left bg-dark shadow-sm" style="width: 200px; align-items: stretch; position:relative; top:-24px; left:-15px;">
+<div class="sidebar float-left bg-dark shadow-sm" style="width: 200px; align-items: stretch; position:relative; top:0px; left:-15px;">
     <nav id="sidebar" style="min-height: 100vh;">
     @guest
 
@@ -27,7 +27,7 @@
 
         @if (Session::has('clientid'))
         <li class="{{ Request::is('deliverynotes') ? 'active' : '' }} list-group-item list-group-item-action">
-            <a href="/invoices" class="{{ Request::is('invoices') ? 'text-light' : '' }}">
+            <a href="/invoices/create" class="{{ Request::is('invoices') ? 'text-light' : '' }}">
             <i class="fas fa-file-invoice-dollar"></i> Delivery Note</a>
             <p class="text-warning text-truncate">
             <a href="clients/deselect">

@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    /**
+    protected $fillable = [
+        'barcode','brand','type','description','unit_id',
+        'price','tax','profit1','profit2',
+        'salesprice1','salesprice2','discount'
+    ];
+   /**
      * El Producto es SOLO un producto la relación
      * la hago después con Deposito y Cantidad
      */
@@ -28,7 +33,6 @@ class Product extends Model
 
     public function quantity()
     {
-        
         return $this->belongsTo('App\Whprodquantity');
     }
 }

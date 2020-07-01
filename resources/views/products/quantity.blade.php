@@ -12,6 +12,7 @@
         </ul>
       </div><br />
 @endif
+
     <div class="card-body">
         @if (session('status'))
             <div class="alert alert-success" role="alert">
@@ -26,6 +27,10 @@
         @method('PATCH')
     @endif
         @csrf
+
+        <input type="hidden" id="id" name="id" value="{{ $whqty->id }}">
+        <input type="hidden" id="product_id" name="product_id" value="{{ $whqty->product_id }}">
+        <input type="hidden" id="warehouse_id" name="warehouse_id" value="{{ $whqty->warehouse_id }}">
 
             <div class="form-group">
                 <div class="row">
@@ -48,11 +53,10 @@
                     <div class="float-right">
                         <button type="submit" class="btn btn-primary"> <i class="fas fa-save"></i> </button>
                     </div>
-
             </div>
+        </form>
         </div>
     </div>
     </div>
 </div>
 </div>
-

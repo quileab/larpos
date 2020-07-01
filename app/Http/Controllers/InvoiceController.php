@@ -4,23 +4,50 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Invoice;
+use App\client;
+use App\Product;
 use App\Invoices_Item;
+use Illuminate\Contracts\Session\Session;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Carbon;
 
 class InvoiceController extends Controller
 {
     public function index(Request $request)
     {
-        $invoices = invoice::paginate(15);
+        $invoices = invoice::paginate(5);
         return view('invoices.index', compact('invoices'));
     }
 
     // create a new one
-    public function create()
+    public function create(Client $client)
     {
-        $data = new Invoice();
-        return view('invoices.createedit', compact('data'));
+        $client = Client::find(session('clientid'));
+        $products = Product::paginate(5);
+        $invoice = new Invoice([
+            'letter' => 'X',
+            'serial' => '2',
+            'date' => Carbon::now(),
+            'salecondition' => 'C',
+            'deliverynoteserial' => '2',
+            'deliverynotenumber' => 0,
+            'seller' => auth()->user()->name,
+            'discount' => '0',
+            'client_ID' => $client->id,
+            'client_ID_type' => $client->idtype,
+            'client_ID_number' => $client->idnumber,
+            'client_Name' => $client->fullname,
+            'client_City' => $client->city,
+            'client_address' => $client->address,
+            'client_tax_Cond' => $client->taxid,
+            'client_phone' => $client->phones,
+            'client_email' => $client->email,
+            'flag' => ''
+        ]);
+        session(['invoice' => serialize($invoice)]);
+        return view('invoices.create', compact('products'));
     }
 
     // update existing (load to edit)
@@ -125,17 +152,16 @@ class InvoiceController extends Controller
         // The ajax call handles the errors...
         $invoice = Invoice::findOrFail($id);
         $invoice->delete();
-
     }
 
     public function show(Request $request)
     {
         //dd($request);
-        $data=Invoice::all();
-        return view('invoices.index',compact('data'));
+        $data = Invoice::all();
+        return view('invoices.index', compact('data'));
     }
 
-    // search myway
+    // search INVOICES myway
     public function search(Request $request)
     {
         //dd($request);
@@ -148,12 +174,99 @@ class InvoiceController extends Controller
             foreach ($cadenas as $cadena) {
                 $query->where(DB::raw('concat(client_Name," ",number)'), 'like', '%' . $cadena . '%');
             }
-        })->paginate(10); //toSql();
+        })->paginate(5); //toSql();
 
         return view('invoices.index', compact('data') //);
-           )->with('i', (request()->input('page', 1) - 1) * 10);
+        )->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
+    // search PRODUCTS myway
+    public function productssearch(Request $request, Invoice $invoice)
+    {
+        //dd($request);
+        $search = $request->get('search');
+        $cadena = preg_replace('/\s\s+/', ' ', $search);
+        $cadena = preg_replace("@[^A-Za-z0-9\w\ ]@", "", $cadena);
+        $cadenas = explode(' ', $cadena);
 
+        $products = Product::where(function ($query) use ($cadenas) {
+            foreach ($cadenas as $cadena) {
+                $query->where(DB::raw('concat(brand," ",type," ",description)'), 'like', '%' . $cadena . '%');
+            }
+        })->paginate(5); //toSql();
 
+        return view('invoices.create', compact('products', 'invoice') //);
+        );
+        // )->with('i', (request()->input('page', 1) - 1) * 5);
+    }
+
+    public function addToCart(Request $request)
+    {
+        $id = $request['id'];
+        $quantity = $request['quantity'];
+        $price = $request['price'];
+
+        $product = Product::find($id);
+        if (!$product) {
+            abort(404);
+        }
+
+        $cart = session()->get('cart');
+
+        // if cart is empty then this the first product
+        if (!$cart) {
+            $cart = [
+                $id => [
+                    "brand" => $product->brand,
+                    "type" => $product->type,
+                    "description" => $product->description,
+                    "quantity" => $quantity,
+                    "price" => $price,
+                ]
+            ];
+            session()->put('cart', $cart);
+            return redirect()->back()->with('success', 'Product added to cart successfully!');
+        }
+
+        // if cart not empty then check if this product exist then increment quantity
+        if (isset($cart[$id])) {
+
+            $cart[$id]['quantity'] += $quantity;
+            session()->put('cart', $cart);
+            return redirect()->back()->with('success', 'Product added to cart successfully!');
+        }
+
+        // if item not exist in cart then add to cart with quantity = 1
+        $cart[$id] = [
+            "brand" => $product->brand,
+            "type" => $product->type,
+            "description" => $product->description,
+            "quantity" => $quantity,
+            "price" => $price,
+        ];
+        session()->put('cart', $cart);
+        return redirect()->back()->with('success', 'Product added to cart!');
+    }
+
+    public function removefromcart(Request $request)
+    {
+        if ($request->id) {
+            $cart = session()->get('cart');
+            if (isset($cart[$request->id])) {
+                unset($cart[$request->id]);
+                session()->put('cart', $cart);
+            }
+            //session()->flash('success', 'Product removed successfully');
+        }
+        return redirect()->back()->with('success', 'Product Removed from cart!');
+    }
+
+    public function cleancart()
+    {
+        if (session()->get('cart')) {
+                session()->forget('cart');
+            }
+        
+        return redirect()->back()->with('success', 'Product Removed from cart!');
+    }
 }

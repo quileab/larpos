@@ -21,7 +21,6 @@
       <th scope="col">Warehouse</th>
       <th scope="col">Brand-Description</th>
       <th scope="col">Qty's</th>
-      <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -31,13 +30,6 @@
     <td>{{ $qtys->warehouse->name }}</td>
     <td>{{ $qtys->product->brand }} : {{ $qtys->product->description }}</td>
     <td>{{ $qtys->quantity }}</td>
-    <td>
-        <div class="btn-group" role="group" aria-label="Actions">
-        <a class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
-        <a class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
-        <a class="btn btn-sm btn-success"><i class="fas fa-check-circle"></i></a>
-        </div>
-    </td>
 </tr>
 @endforeach
     </tbody>

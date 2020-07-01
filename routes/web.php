@@ -40,6 +40,10 @@ Route::get('/clients/deselect', 'ClientController@deselect')->name('clients.dese
 
 Route::resource('invoices', 'InvoiceController',['except'=>['show']]);
 Route::get('/invoices/search', 'InvoiceController@search')->name('invoices.search');
+Route::get('/invoices/productssearch', 'InvoiceController@productssearch')->name('invoices.productssearch');
+Route::post('/invoices/addtocart', 'InvoiceController@addtocart')->name('invoices.addtocart');
+Route::get('/invoices/removefromcart/{id}', 'InvoiceController@removefromcart')->name('invoices.removefromcart');
+Route::get('/invoices/cleancart', 'InvoiceController@cleancart')->name('invoices.cleancart');
 
 Route::resource('products', 'ProductController',['except'=>['show']]);
 Route::get('/products/search', 'ProductController@search')->name('products.search');
@@ -50,8 +54,9 @@ Route::get('/waredeselect', 'WarehouseController@waredeselect')->name('waredesel
 
 Route::get('/prodqtys', 'WhprodquantityController@index')->name('prodqtys');
 
-Route::get('/whprodquantities/store','WhprodquantityController@store')->name('whprodquantities.store');
-Route::get('/whprodquantities/update','WhprodquantityController@update')->name('whprodquantities.update');
+Route::resource('whprodquantities', 'WhprodquantityController',['except'=>['show']]);
+//Route::post('/whprodquantities/store','WhprodquantityController@store')->name('whprodquantities.store');
+//Route::put('/whprodquantities/update','WhprodquantityController@update')->name('whprodquantities.update');
 
 /*
 Route::resource('products', 'ProductsController', [
