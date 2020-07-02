@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 use App\Invoice;
 use App\client;
 use App\Product;
-use App\Invoices_Item;
-use Illuminate\Contracts\Session\Session;
+use App\Invoicesitems;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -323,7 +322,7 @@ class InvoiceController extends Controller
         $id = DB::getPdo()->lastInsertId();
 
         foreach ($cart as $key => $cartitem) {
-            $detail = new Invoices_Item();
+            $detail = new Invoicesitems();
             $product = Product::find($key);
 
             $detail->invoices_id = $id;
@@ -332,7 +331,7 @@ class InvoiceController extends Controller
             $detail->type = $product->type;
             $detail->description = $product->description;
             $detail->quantity = $cartitem['quantity'];
-            $detail->unit = $product->unit;
+            $detail->unit = $product->unit->unit;
             $detail->price = $cartitem['price'];
             $detail->tax = $product->tax;
             $detail->discount = $product->discount;
@@ -341,20 +340,36 @@ class InvoiceController extends Controller
         if (session()->get('cart')) {
             session()->forget('cart');
         }
+        if (session()->get('client_id')) {
+            session()->forget('clientid');
+        }
+        if (session()->get('client_name')) {
+            session()->forget('clientname');
+        }
+
 
         Alert::toast('Creado exitósamente', 'success');
 
         return redirect()->route('invoices.printpdf')->with(compact('invoice'));
     }
 
-    public function printpdf()
+    public function printpdf(Request $request)
     {
+        $letter=$request->session()->get('invoice')->letter;
+        $serial=$request->session()->get('invoice')->serial;
+        $number=$request->session()->get('invoice')->number;
+        $id=$request->session()->get('invoice')->id;
+
+        $invoice=Invoice::find($id);
+        $invoicesitems=Invoicesitems::where('invoices_id',$id)->get();
+
         $pdf = app('dompdf.wrapper');
 
-        $pdf->loadHTML('<h1>Larpos</h1><hr />Impresión de Comprobantes');
+        $pdf->loadView('invoices.pdf', compact('invoice', 'invoicesitems'))
+            ->setPaper('a4');
 
         return $pdf->stream();
 
-        //return redirect()->back()->with('success', 'Product Removed from cart!');
+        return redirect()->back()->with('success', 'Comprobante PDF OK');
     }
 }
