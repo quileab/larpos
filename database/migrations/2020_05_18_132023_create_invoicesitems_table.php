@@ -13,7 +13,7 @@ class CreateInvoicesItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('invoices_items', function (Blueprint $table) {
+        Schema::create('invoicesitems', function (Blueprint $table) {
             $table->id();
             $table->foreignId('invoices_id')->references('id')->on('invoices');
             $table->unsignedBigInteger('products_id');
@@ -21,7 +21,7 @@ class CreateInvoicesItemsTable extends Migration
             $table->string('type', 20);
             $table->string('description', 60)->nullable();
             $table->decimal('quantity', 8, 2);
-            $table->char('unit', 4);
+            $table->char('unit', 4)->nullable;
             $table->decimal('price', 8, 2);
             $table->decimal('tax', 5, 2);
             $table->decimal('discount', 8, 2);
@@ -36,6 +36,6 @@ class CreateInvoicesItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invoices_items');
+        Schema::dropIfExists('invoicesitems');
     }
 }

@@ -36,9 +36,11 @@ $total=0;
                             {{ unserialize(Session::get('invoice'))['number'] }}
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <a href="{{route('invoices.cleancart')}}" class="href">
-                                <button type="button" class="btn btn-warning"><i class="fas fa-trash"></i></button></a>
-                                <button type="button" class="btn btn-primary"><i class="fas fa-info-circle"></i></button>
-                                <button type="button" class="btn btn-success"><i class="fas fa-print"></i></button>
+                                    <button type="button" class="btn btn-warning"><i class="fas fa-trash"></i></button></a>
+                                <a href="{{route('invoices.printpdf')}}" class="href">
+                                    <button type="button" class="btn btn-primary"><i class="fas fa-info-circle"></i></button></a>
+                                <a href="{{route('invoices.savePrintOrder')}}" class="href">
+                                    <button type="button" class="btn btn-success"><i class="fas fa-print"></i></button></a>
                             </div>
                         </div>
                         <!-- Cart Total -->

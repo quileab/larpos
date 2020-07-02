@@ -264,9 +264,97 @@ class InvoiceController extends Controller
     public function cleancart()
     {
         if (session()->get('cart')) {
-                session()->forget('cart');
-            }
-        
+            session()->forget('cart');
+        }
+
         return redirect()->back()->with('success', 'Product Removed from cart!');
+    }
+
+    public function savePrintOrder(Request $request)
+    {
+
+        $request = unserialize(session()->get('invoice'));
+        $count = Invoice::where('id', '>', '0')->count();
+        /*
+        $this->validate($request, [
+            'letter' => 'required',
+            'serial' => 'required',
+            'number' => 'required',
+            'date' => 'required',
+            'salecondition' => 'nullable',
+            'deliverynoteserial' => 'nullable',
+            'deliverynotenumber' => 'nullable',
+            'seller' => 'required',
+            'discount' => 'nullable',
+            'client_ID' => 'nullable',
+            'client_ID_type' => 'nullable',
+            'client_Name' => 'nullable',
+            'client_City' => 'nullable',
+            'client_address' => 'nullable',
+            'client_tax_Cond' => 'nullable',
+            'client_phone' => 'nullable',
+            'client_email' => 'nullable',
+            'flag' => 'nullable',
+        ]);
+*/
+        $invoice = new Invoice();
+        $invoice->letter = $request['letter'];
+        $invoice->serial = $request['serial'];
+        $invoice->number = $count; //$request['number'];
+        $invoice->date = $request['date'];
+        $invoice->salecondition = $request['salecondition'];
+        $invoice->deliverynoteserial = $request['deliverynoreserial'] == null ? $request['serial'] : $request['deliverynoreserial'];
+        $invoice->deliverynotenumber = $request['deliverynotenumber'];
+        $invoice->seller = $request['seller'];
+        $invoice->discount = $request['discount'];
+        $invoice->client_ID = $request['client_ID'];
+        $invoice->client_ID_type = $request['client_ID_type'];
+        $invoice->client_ID_number = $request['client_ID_number'] == null ? $request['client_ID'] : $request['client_ID_number'];
+        $invoice->client_Name = $request['client_Name'];
+        $invoice->client_City = $request['client_City'];
+        $invoice->client_address = $request['client_address'];
+        $invoice->client_tax_Cond = $request['client_tax_Cond'] == null ? '5' : $request['client_tax_Cond'];
+        $invoice->client_phone = $request['client_phone'];
+        $invoice->client_email = $request['client_email'];
+        $invoice->flag = $request['flag'];
+        $invoice->save();
+
+        $cart = session()->get('cart');
+        $id = DB::getPdo()->lastInsertId();
+
+        foreach ($cart as $key => $cartitem) {
+            $detail = new Invoices_Item();
+            $product = Product::find($key);
+
+            $detail->invoices_id = $id;
+            $detail->products_id = $key;
+            $detail->brand = $product->brand;
+            $detail->type = $product->type;
+            $detail->description = $product->description;
+            $detail->quantity = $cartitem['quantity'];
+            $detail->unit = $product->unit;
+            $detail->price = $cartitem['price'];
+            $detail->tax = $product->tax;
+            $detail->discount = $product->discount;
+            $detail->save();
+        }
+        if (session()->get('cart')) {
+            session()->forget('cart');
+        }
+
+        Alert::toast('Creado exitósamente', 'success');
+
+        return redirect()->route('invoices.printpdf')->with(compact('invoice'));
+    }
+
+    public function printpdf()
+    {
+        $pdf = app('dompdf.wrapper');
+
+        $pdf->loadHTML('<h1>Larpos</h1><hr />Impresión de Comprobantes');
+
+        return $pdf->stream();
+
+        //return redirect()->back()->with('success', 'Product Removed from cart!');
     }
 }

@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('brand', 20); // marca
             $table->string('type', 20); // modelo
             $table->string('description', 60)->nullable();
-            $table->foreignId('unit_id')->references('id')->on('units');
+            $table->foreignId('unit_id')->references('id')->on('units')->nullable();
             $table->decimal('price', 8, 2);
             $table->decimal('tax', 5, 2);
             $table->decimal('profit1', 5, 2)->nullable();
