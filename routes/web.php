@@ -32,40 +32,30 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:mana
     );
 });
 
-Route::resource('warehouses', 'WarehouseController');
-Route::resource('clients', 'ClientController',['except'=>['show']]);
-Route::get('/clients/search', 'ClientController@search')->name('clients.search');
-Route::get('/clients/select/{id}', 'ClientController@select')->name('clients.select');
-Route::get('/clients/deselect', 'ClientController@deselect')->name('clients.deselect');
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('warehouses', 'WarehouseController');
+    Route::resource('clients', 'ClientController', ['except' => ['show']]);
+    Route::get('/clients/search', 'ClientController@search')->name('clients.search');
+    Route::get('/clients/select/{id}', 'ClientController@select')->name('clients.select');
+    Route::get('/clients/deselect', 'ClientController@deselect')->name('clients.deselect');
 
-Route::resource('invoices', 'InvoiceController',['except'=>['show']]);
-Route::get('/invoices/search', 'InvoiceController@search')->name('invoices.search');
-Route::get('/invoices/productssearch', 'InvoiceController@productssearch')->name('invoices.productssearch');
-Route::post('/invoices/addtocart', 'InvoiceController@addtocart')->name('invoices.addtocart');
-Route::get('/invoices/removefromcart/{id}', 'InvoiceController@removefromcart')->name('invoices.removefromcart');
-Route::get('/invoices/cleancart', 'InvoiceController@cleancart')->name('invoices.cleancart');
-Route::get('/invoices/savePrintOrder', 'InvoiceController@savePrintOrder')->name('invoices.savePrintOrder');
-Route::get('/invoices/printpdf', 'InvoiceController@printpdf')->name('invoices.printpdf');
+    Route::resource('invoices', 'InvoiceController', ['except' => ['show']]);
+    Route::get('/invoices/search', 'InvoiceController@search')->name('invoices.search');
+    Route::get('/invoices/productssearch', 'InvoiceController@productssearch')->name('invoices.productssearch');
+    Route::post('/invoices/addtocart', 'InvoiceController@addtocart')->name('invoices.addtocart');
+    Route::get('/invoices/removefromcart/{id}', 'InvoiceController@removefromcart')->name('invoices.removefromcart');
+    Route::get('/invoices/cleancart', 'InvoiceController@cleancart')->name('invoices.cleancart');
+    Route::get('/invoices/savePrintOrder', 'InvoiceController@savePrintOrder')->name('invoices.savePrintOrder');
+    Route::get('/invoices/printpdf', 'InvoiceController@printpdf')->name('invoices.printpdf');
 
-Route::resource('products', 'ProductController',['except'=>['show']]);
-Route::get('/products/search', 'ProductController@search')->name('products.search');
-Route::get('/products/create', 'ProductController@create')->name('products.create');
+    Route::resource('products', 'ProductController', ['except' => ['show']]);
+    Route::get('/products/search', 'ProductController@search')->name('products.search');
+    Route::get('/products/create', 'ProductController@create')->name('products.create');
 
-Route::get('/wareselect/{id}', 'WarehouseController@wareselect')->name('wareselect');
-Route::get('/waredeselect', 'WarehouseController@waredeselect')->name('waredeselect');
+    Route::get('/wareselect/{id}', 'WarehouseController@wareselect')->name('wareselect');
+    Route::get('/waredeselect', 'WarehouseController@waredeselect')->name('waredeselect');
 
-Route::get('/prodqtys', 'WhprodquantityController@index')->name('prodqtys');
+    Route::get('/prodqtys', 'WhprodquantityController@index')->name('prodqtys');
 
-Route::resource('whprodquantities', 'WhprodquantityController',['except'=>['show']]);
-//Route::post('/whprodquantities/store','WhprodquantityController@store')->name('whprodquantities.store');
-//Route::put('/whprodquantities/update','WhprodquantityController@update')->name('whprodquantities.update');
-
-/*
-Route::resource('products', 'ProductsController', [
-    'only' => ['index', 'create', 'store']
-]);
-
-Route::resource('products', 'ProductsController', [
-    'except' => [ 'show' ]
-]);
-*/
+    Route::resource('whprodquantities', 'WhprodquantityController', ['except' => ['show']]);
+});

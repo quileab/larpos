@@ -25,7 +25,7 @@ class CreateClientsTable extends Migration
             $table->string('phones', 30)->nullable();
             $table->string('group', 2)->nullable();
             $table->string('taxid', 11)->nullable(); // cuit
-            $table->string('email', 127);
+            $table->string('email', 127)->nullable();
             $table->timestamps();
         });
     }

@@ -2,7 +2,7 @@
           <thead>
             <tr>
               <th scope="col">Description</th>
-              <th scope="col"></th>
+              <th scope="col"><input class="form-control form-control-sm" type="number" name="qty" id="qty" placeholder="Cantidad" aria-label="Cantidad" value="1"></th>
             </tr>
           </thead>
           <tbody>

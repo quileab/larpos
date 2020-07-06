@@ -7,9 +7,19 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-4"><h4>Clients</h4></div>
+                        <div class="col-4"><h4>Clients</h4>
+                        @if (session()->has('filename'))
+                        <a href="{{ session('filename')}}" target="_blank" class="text-danger">
+                        <i class="fas fa-file-pdf"></i>&nbsp;{{ session('filename') ?? '' }}<br />
+                        </a>
+                        <script>
+                            window.open("{{ session('filename') }}", "_blank");
+                        </script>
+                        @endif
+                        </div>
+                    
                         <div class="col-6">
-
+                            
                         <form action="{{ route('clients.search') }}" method="get" spellcheck="false">
                         <div class="input-group md-form form-sm form-2">
                             <input class="form-control" type="search" name="search" placeholder="Buscar" aria-label="Search">

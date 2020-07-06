@@ -16,7 +16,7 @@ $total=0;
                         {{ session('status') }}
                     </div>
                     @endif
-                    <div class="row pb-2 text-light">
+                    <div class="row">
                         <!-- Client Data -->
                         <div class="col">
                             <h5>
@@ -70,9 +70,9 @@ $total=0;
                             </form>
                         </div>
                         <div class="col-4"></div>
-                        <div class="col-2">
+                        <!-- div class="col-2">
                             <input class="form-control form-control-sm" type="number" name="qty" id="qty" placeholder="Cantidad" aria-label="Cantidad" value="1">
-                        </div>
+                        </div -->
                     </div>
                 </div><!-- Card Header -->
                 <div class="card-body">

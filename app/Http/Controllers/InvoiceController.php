@@ -7,6 +7,7 @@ use App\Invoice;
 use App\client;
 use App\Product;
 use App\Invoicesitems;
+use App\Whprodquantity;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -271,7 +272,11 @@ class InvoiceController extends Controller
 
     public function savePrintOrder(Request $request)
     {
-
+        if ($request->session()->has('WH')) {
+            $warehouse=session()->get('WH');
+           } else {
+            $warehouse=auth()->user()->warehouse_id;
+           }
         $request = unserialize(session()->get('invoice'));
         $count = Invoice::where('id', '>', '0')->count();
         /*
@@ -336,17 +341,27 @@ class InvoiceController extends Controller
             $detail->tax = $product->tax;
             $detail->discount = $product->discount;
             $detail->save();
+            // ------- Update Stock --------
+            $stock=Whprodquantity::where('warehouse_id',$warehouse)->where('product_id',$key)->get();
+            // Toma la Cantidad si existe en Depósito
+            $quantity = ($stock->count()>0) ? $quantity=$stock[0]->quantity : 0;
+            if($detail->quantity>=$quantity){
+                $quantity=0;
+            }else{
+                $quantity-=$detail->quantity;
+            }
+            if ($stock->count()>0) { // Si en depósito existe esa mercadería la actualiza
+            $stock[0]->quantity=$quantity;
+            $stock[0]->save();
+            }
         }
         if (session()->get('cart')) {
             session()->forget('cart');
         }
-        if (session()->get('client_id')) {
+        if (session()->has('clientid')) {
+            session()->forget('clientname');
             session()->forget('clientid');
         }
-        if (session()->get('client_name')) {
-            session()->forget('clientname');
-        }
-
 
         Alert::toast('Creado exitósamente', 'success');
 
@@ -368,8 +383,11 @@ class InvoiceController extends Controller
         $pdf->loadView('invoices.pdf', compact('invoice', 'invoicesitems'))
             ->setPaper('a4');
 
-        return $pdf->stream();
-
-        return redirect()->back()->with('success', 'Comprobante PDF OK');
+        $output=$pdf->output();
+        $filename=$letter.'-'.$serial.'-'.$number.'.pdf';
+        file_put_contents($filename,$output);
+        //return $pdf->stream();
+        // return $pdf->download('comprobante.pdf');
+        return redirect()->route('clients.index')->with(compact('filename'));
     }
 }
