@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Product;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Productslist extends Component
@@ -29,8 +30,16 @@ class Productslist extends Component
 
     public function wiresearch()
     {
-        $buscar = $this->buscar;
-        $this->products = Product::query()->where('description', 'LIKE', "%{$buscar}%")->get();
+        $search = $this->buscar;
+        $cadena = preg_replace('/\s\s+/', ' ', $search);
+        $cadena = preg_replace("@[^A-Za-z0-9\w\ ]@", "", $cadena);
+        $cadenas = explode(' ', $cadena);
+
+        $this->products = Product::where(function ($query) use ($cadenas) {
+            foreach ($cadenas as $cadena) {
+                $query->where(DB::raw('concat(brand," ",type," ",description)'), 'like', '%' . $cadena . '%');
+            }
+        })->take(40)->get();
     }
 
     public function addToCart($prodID, $quantity, $price)

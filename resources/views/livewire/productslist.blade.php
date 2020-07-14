@@ -1,4 +1,3 @@
-<!-- VENTANA MODAL de búsqueda -->
 <div wire:ignore.self id="ProductsModal" class="modal shadow" role="dialog" tabindex="-1">
     <div class="modal-dialog" role="document">
 
@@ -23,18 +22,18 @@
                 </div>
 
                 @if ($products)
-                <table class="">
+                <table class="table table-striped table-sm">
                     <thead>
                         <tr>
-                            <th scope="col">Description</th>
-                            <th scope="col"></th>
+                            <th scope="col">Descipción</th>
+                            <th scope="col">Precio</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($products as $product)
                         <tr>
                             <td class="small text-break">
-                            <button class="btn btn-block btn-primary btn-sm" 
+                            <button class="btn btn-block btn-dark btn-sm text-left" 
                                         wire:click="addToCart({{ $product->id }},{{ $quantity }},{{ $product->price }})">
                                 {{ $product->brand }}, {{ $product->description }}
                             </button>

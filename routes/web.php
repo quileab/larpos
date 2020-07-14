@@ -47,11 +47,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/invoices/cleancart', 'InvoiceController@cleancart')->name('invoices.cleancart');
     Route::get('/invoices/savePrintOrder', 'InvoiceController@savePrintOrder')->name('invoices.savePrintOrder');
     Route::get('/invoices/printpdf', 'InvoiceController@printpdf')->name('invoices.printpdf');
-
+/*
     Route::get('/invoices/cart', function () {
         return view('invoices.cart');
     })->name('invoices.cart');
-
+*/
     Route::resource('products', 'ProductController', ['except' => ['show']]);
     Route::get('/products/search', 'ProductController@search')->name('products.search');
     Route::get('/products/create', 'ProductController@create')->name('products.create');

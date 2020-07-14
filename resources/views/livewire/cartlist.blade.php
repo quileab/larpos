@@ -14,7 +14,7 @@
             <h2>@qbmoney($total ?? '')</h2>
         </div>
     </div>
-    <table class="table">
+    <table class="table table-striped table-sm">
         <thead>
             <tr>
                 <th scope="col">Producto</th>
