@@ -17,7 +17,7 @@
                       <option value="{{ $product->salesprice1 }}">{{ $product->salesprice1 }}</option>
                       <option value="{{ $product->salesprice2 }}">{{ $product->salesprice2 }}</option>
                     </select>
-                    <input type="hidden" name="quantity" id="quantity{{ $product->id }}" value="1" size="2" width=20px>
+                    <input type="hidden" name="quantity" id="quantity{{ $product->id }}" value="1">
                     <input type="hidden" name="id" value="{{ $product->id }}">
                     <button class="btn btn-success btn-sm" type="submit" onclick="
                         $('#quantity{{ $product->id }}').val(parseFloat(document.getElementById('qty').value));">

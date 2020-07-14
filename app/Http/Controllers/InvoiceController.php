@@ -191,10 +191,13 @@ class InvoiceController extends Controller
 
         $products = Product::where(function ($query) use ($cadenas) {
             foreach ($cadenas as $cadena) {
-                $query->where(DB::raw('concat(brand," ",type," ",description)'), 'like', '%' . $cadena . '%');
+                $query->where(DB::raw('concat(barcode," ",brand," ",description)'), 'like', '%' . $cadena . '%');
             }
         })->paginate(5); //toSql();
 
+        if ($products->count()==1){
+           $response=$this->addToCart($request);
+        }
         return view('invoices.create', compact('products', 'invoice') //);
         );
         // )->with('i', (request()->input('page', 1) - 1) * 5);
@@ -226,6 +229,7 @@ class InvoiceController extends Controller
             ];
             session()->put('cart', $cart);
             return redirect()->back()->with('success', 'Product added to cart successfully!');
+            //redirect()->route('invoices.create');
         }
 
         // if cart not empty then check if this product exist then increment quantity
@@ -234,6 +238,7 @@ class InvoiceController extends Controller
             $cart[$id]['quantity'] += $quantity;
             session()->put('cart', $cart);
             return redirect()->back()->with('success', 'Product added to cart successfully!');
+            //redirect()->route('invoices.create');
         }
 
         // if item not exist in cart then add to cart with quantity = 1
@@ -246,6 +251,7 @@ class InvoiceController extends Controller
         ];
         session()->put('cart', $cart);
         return redirect()->back()->with('success', 'Product added to cart!');
+        //redirect()->route('invoices.create');
     }
 
     public function removefromcart(Request $request)

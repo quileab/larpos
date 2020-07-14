@@ -22,6 +22,7 @@
     <!--link href="{/ { asset('css/app.css') } /}" rel="stylesheet"-->
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
+    @livewireStyles
 </head>
 <style>
     li>a, li>a:hover{
@@ -34,7 +35,8 @@
 <body>
 
     @include('sweetalert::alert')
-    <div id="app">
+    <!-- div id="app" -->
+    <div>
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
@@ -46,7 +48,7 @@
                 @endauth
                     @if (Session::has('WH'))
                     &nbsp;<i class="fas fa-random text-warning"></i>&nbsp;
-                        {{{ Session::get('warehouse') }}}&nbsp;<small>({{{ Session::get('WH') }}})</small> 
+                       {{{ Session::get('warehouse') }}}&nbsp;<small>({{{ Session::get('WH') }}})</small> 
                     @endif
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -106,5 +108,6 @@
             </div>
         </main>
     </div>
+    @livewireScripts
 </body>
 </html>

@@ -10,43 +10,46 @@
       </div>
       <div class="modal-body">
 
+        <div>
+          <div class="input-group">
+            <input class="form-control" type="search" name="descripcion" wire:model="buscar">
+            <input class="form-control" type="number" min="1" name="cantidad" wire:model="quantity">
+            <div class="input-group-append">
+              <button class="btn btn-primary" wire:click="wiresearch"><i class="fas fa-cart-plus"></i></button>
+            </div>
+          </div>
 
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Description</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            @foreach ($products as $product)
-            <tr>
-              <td>{{ $product->brand }}, {{ $product->description }}</td>
-              <td>
-                <form name="item{{ $product->id }}" method="post" action="{{route('invoices.addtocart')}}">
-                  @csrf
+          @if ($products)
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Description</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach ($products as $product)
+              <tr>
+                <td class="small text-break">{{ $product->brand }}, {{ $product->description }}</td>
+                <td>
                   <div class="input-group">
                     <select name="price" class="custom-select custom-select-sm">
                       <option value="{{ $product->salesprice1 }}">{{ $product->salesprice1 }}</option>
                       <option value="{{ $product->salesprice2 }}">{{ $product->salesprice2 }}</option>
                     </select>
-                    <input type="hidden" name="quantity" id="quantity{{ $product->id }}" value="1" size="2" width=20px>
-                    <input type="hidden" name="id" value="{{ $product->id }}">
-                    <button class="btn btn-success btn-sm" type="submit" onclick="
-                                                            $('#quantity{{ $product->id }}').val(parseFloat(document.getElementById('qty').value));">
-                      <i class="fas fa-cart-plus"></i></button>
-                    <!-- input type="submit" value="Agregar" onclick="$('#quantity{{ $product->id }}').val(parseFloat(document.getElementById('qty').value));"-->
+                    <button class="btn btn-success btn-sm" wire:click="addToCart({{ $product->id }},{{ $quantity }},{{ $product->price }})">
+                      <i class="fas fa-cart-plus"></i>
+                    </button>
                   </div>
-                </form>
-              </td>
-            </tr>
-            @endforeach
-          </tbody>
-        </table>
+                </td>
+              </tr>
+              @endforeach
+            </tbody>
+          </table>
+          @endif
+        </div>
 
-        {{ $products->links() }}
-
-      </div>
+      </div> <!-- end modal-body -->
       <div class="modal-footer">
         <button type="button" class="btn btn-primary">Save changes</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

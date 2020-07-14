@@ -34,12 +34,12 @@ $total=0;
                             {{ unserialize(Session::get('invoice'))['letter'] }}
                             {{ unserialize(Session::get('invoice'))['serial'] }}-
                             {{ unserialize(Session::get('invoice'))['number'] }}
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                                <a href="{{route('invoices.cleancart')}}" class="href">
+                            <div class="btn-group" role="group" aria-label="Acciones">
+                                <a href="{{route('invoices.cleancart')}}" class="href" title="Borrar Items">
                                     <button type="button" class="btn btn-warning"><i class="fas fa-trash"></i></button></a>
                                 <a href="{{route('invoices.printpdf')}}" class="href">
                                     <button type="button" class="btn btn-primary"><i class="fas fa-info-circle"></i></button></a>
-                                <a href="{{route('invoices.savePrintOrder')}}" class="href">
+                                <a href="{{route('invoices.savePrintOrder')}}" class="href" title="Imprimir Comprobante">
                                     <button type="button" class="btn btn-success"><i class="fas fa-print"></i></button></a>
                             </div>
                         </div>
@@ -58,11 +58,15 @@ $total=0;
                     </div>
                     <div class="row">
                         <div class="col-6">
+                            <!---- BUSQUEDA de productos ---->
                             <form action="{{ route('invoices.productssearch') }}" method="get" spellcheck="false">
                                 <div class="input-group md-form form-sm form-2">
+                                    <input type="hidden" name="quantity" id="srchquantity" value="1">
                                     <input class="form-control form-control-sm" type="search" name="search" placeholder="Buscar" aria-label="Search">
                                     <div class="input-group-append form-control-sm">
-                                        <button class="input-group-text btn btn-success" type="submit">
+                                        <button class="input-group-text btn btn-success" type="submit"
+                                            onclick="$('#srchquantity').val(parseFloat(document.getElementById('qty').value));"
+                                        >
                                             <i class="fas fa-search" aria-hidden="true"></i>
                                         </button>
                                     </div>
@@ -94,7 +98,6 @@ $total=0;
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     @if(session('cart'))
                                     @foreach(session('cart') as $key => $cartitem)
                                     <tr>
@@ -108,10 +111,8 @@ $total=0;
                                             </a>
                                         </td>
                                     </tr>
-
                                     @endforeach
                                     @endif
-
                                 </tbody>
                             </table>
                         </div>
@@ -119,6 +120,10 @@ $total=0;
                 </div>
             </div>
         </div>
+
+
+        @include('invoices.modalProducts')
+
     </div>
 </div>
 @endsection
