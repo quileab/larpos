@@ -1,4 +1,5 @@
-<div class="sidebar float-left bg-dark shadow-sm" style="width: 200px; align-items: stretch; position:relative; top:0px; left:-15px;">
+<div id="sidebar" class="sidebar float-left bg-dark shadow-sm overflow-hidden" 
+    style="width: 200px; align-items: stretch; position:relative; top:0px; left:-15px;">
     <nav id="sidebar" style="min-height: 100vh;">
     @guest
 
@@ -30,7 +31,7 @@
             <a href="/invoices/create" class="{{ Request::is('invoices') ? 'text-light' : '' }}">
             <i class="fas fa-file-invoice-dollar"></i> Delivery Note</a>
             <p class="text-warning text-truncate">
-            <a href="clients/deselect">
+            <a href="{{ route('clients.deselect') }}">
                 <i class="fas fa-user-slash text-danger"></i></a>&nbsp;
             <small> ({{{ Session::get('clientid') }}}) &nbsp; {{{ Session::get('clientname') }}}</small>
             </p>

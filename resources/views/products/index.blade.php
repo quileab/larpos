@@ -56,7 +56,7 @@
     <td>
         <div class="btn-group" role="group" aria-label="Actions">
             <a class="btn btn-sm btn-primary"
-                href="products/{{ $product->id }}/edit">
+                href="{{ route('products.edit', [$product->id])}}">
                 <i class="fas fa-edit"></i></a>
             <a href="{{ route('products.destroy', [$product->id])}}" title="{{ $product->brand }}, {{ $product->type }}"
                 class="btn btn-sm btn-danger btn-delete"

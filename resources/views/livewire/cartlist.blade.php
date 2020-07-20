@@ -2,12 +2,18 @@
     <div class="row">
         <div class="col">
             <div class="btn-group" role="group" aria-label="Acciones">
+                @if(session('cart'))
                 <a href="#" class="href" title="Borrar Items" wire:click="cleancart()">
                     <button type="button" class="btn btn-warning"><i class="fas fa-trash"></i></button></a>
+                @endif
                 <a href="#" class="href">
                     <button type="button" class="btn btn-primary"><i class="fas fa-info-circle"></i></button></a>
+                @if(session('cart'))
                 <a href="{{route('invoices.savePrintOrder')}}" class="href" title="Imprimir Comprobante">
-                    <button type="button" class="btn btn-success"><i class="fas fa-print"></i></button></a>
+                    <button type="button" class="btn btn-success">
+                        <i class="fas fa-print"></i> Imprimir
+                    </button></a>
+                @endif
             </div>
         </div>
         <div class="col text-right">
@@ -29,7 +35,7 @@
             <tr>
                 <td><small class='text-muted'>{{ $key }}</small> <small>{{ $cartitem['brand'] }}, {{ $cartitem['description'] }} ({{ $cartitem['type'] }})</small></td>
                 <td class="text-right">{{ $cartitem['quantity'] }}</td>
-                <td class="text-right">{{ $cartitem['price'] }}</td>
+                <td class="text-right">@qbmoney($cartitem['price'])</td>
                 <td>
                     <button class="btn btn-primary-outline" wire:click="removefromcart({{ $key }})">
                         <i class="fas fa-times text-danger"></i>

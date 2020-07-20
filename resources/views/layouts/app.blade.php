@@ -36,14 +36,17 @@
 </style>
 
 <body>
-
-    @include('sweetalert::alert')
     <!-- div id="app" -->
     <div>
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
-            <div class="container">
+            <div class="container-fluid">
+                <a class="btn btn-dark" data-toggle="collapse" href="#sidebar" role="button" aria-expanded="false" aria-controls="sidebar">
+                <i class="fas fa-ellipsis-v"></i>&nbsp;
+                </a>
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
+                    &nbsp;
+                    
                 </a>
 
                 @auth
@@ -110,7 +113,19 @@
             </div>
         </main>
     </div>
+    @include('sweetalert::alert')
     @livewireScripts
+    <script>
+        window.livewire.on('swal', message => {
+            // OK swal("No encontrado","Verifique el código de barras","warning");
+            swal({
+                position: 'top-end',
+                icon: 'warning',
+                title: message,
+                showConfirmButton: true,
+            })
+        });
+    </script>
 </body>
 
 </html>

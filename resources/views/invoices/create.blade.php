@@ -11,29 +11,39 @@
           </div>
           @endif
           <div class="row">
-            <div class="col-6">
-            @livewire("barcodeto-cart")
-          </div>
+            <!---- BARCODE Search ---->
+            <div class="col-5">
+              @livewire("barcodeto-cart")
+            </div>
             <!---- OPEN Advanced Search MODAL ---->
-            <div class="col-6">
+            <div class="col-4">
               <button class="btn btn-primary" data-toggle="modal" data-target="#ProductsModal">
                 &nbsp;Producto&nbsp;
                 <i class="fas fa-search" aria-hidden="true"></i>&nbsp;
               </button>
             </div>
-            <!-- div class="col-2">
-                <input class="form-control form-control-sm" type="number" name="qty" id="qty" placeholder="Cantidad" aria-label="Cantidad" value="1">
-            </div -->
+            <!---- Tipo y Punto de Comprobante ---->
+            <div class="col-3">
+              <div class="input-group">
+                <select title="Comprobante" class="form-control selectpicker">
+                  <option>X</option>
+                  <option>A</option>
+                  <option>B</option>
+                  <option>C</option>
+                </select>
+                <input class="form-control" type="number" name="quantity" id="srchquantity" min="1" value="1" wire:model="quantity" wire:keydown.enter="barcodesearch">
+              </div>
+            </div>
           </div>
-        </div><!-- Card Header -->
+        </div><!-- /Card Header -->
         <div class="card-body">
           @livewire("productslist")
-          <div class="row">
-            <div class="col">
-              <!-- List of searched products -->
-              @livewire("cartlist")
-              <!-- end -->
-            </div>
+          <div class="col">
+
+            <!-- List of searched products -->
+            @livewire("cartlist")
+            <!-- end -->
+
           </div>
         </div>
       </div>

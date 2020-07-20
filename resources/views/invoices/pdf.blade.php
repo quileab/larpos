@@ -10,8 +10,8 @@ $total=0;
         <div class="col-5">
             <!-- Client Data -->
             <strong>Cliente: </strong>{{ $invoice->client_Name }}<br />
-            <strong>Dirección: </strong>{{ $invoice->client_address }} ({{ $invoice->client_City }})<br />
-            <strong>Teléfono: </strong>{{ $invoice->client_phone }}
+            <!--strong>Dirección: </strong>{{ $invoice->client_address }} ({{ $invoice->client_City }})<br />
+            <strong>Teléfono: </strong>{{ $invoice->client_phone }} -->
         </div>
         <!-- Document Type letter -->
         <div class="col-1 bg-g1 txt-ctr"><br />
@@ -21,7 +21,7 @@ $total=0;
         <!-- Document Data -->
         <div class="col-3">
             <h4>{{ str_pad($invoice->serial,4,'0', STR_PAD_LEFT) }} - {{ str_pad($invoice->number,8,'0', STR_PAD_LEFT) }}</h4>
-            {{ $invoice->seller }}
+            <small>{{ $invoice->seller }}</small>
         </div>
     </div>
 

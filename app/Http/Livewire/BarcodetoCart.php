@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use RealRashid\SweetAlert\Facades\Alert;
 use App\Product;
 
 class BarcodetoCart extends Component
@@ -27,9 +28,9 @@ class BarcodetoCart extends Component
         $quantity = $this->quantity;
         $product = Product::where('barcode', $search)->get();
 
-        //dd($search,$quantity,$product[0]->id);
-        if (!$product) {
-            $this->emit('sweet-alert', 'Producto NO emcontrado!');
+        if (!$product or (sizeof($product)==0)) {
+            $this->buscar='';
+            $this->emit('swal','Producto * NO * encontrado.');
         } else {
             $product=$product[0];
             $prodID = $product->id;

@@ -24,6 +24,10 @@ class InvoiceController extends Controller
     // create a new one
     public function create(Client $client)
     {
+        if (!session()->has('clientid')){ // no hay cliente seleccionado
+            return redirect()->route('clients.index');
+        }
+
         $client = Client::find(session('clientid'));
         $products = Product::paginate(5);
         $invoice = new Invoice([
