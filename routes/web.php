@@ -43,9 +43,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/invoices/search', 'InvoiceController@search')->name('invoices.search');
     Route::get('/invoices/productssearch', 'InvoiceController@productssearch')->name('invoices.productssearch');
     Route::post('/invoices/addtocart', 'InvoiceController@addtocart')->name('invoices.addtocart');
-    Route::get('/invoices/removefromcart/{id}', 'InvoiceController@removefromcart')->name('invoices.removefromcart');
-    Route::get('/invoices/cleancart', 'InvoiceController@cleancart')->name('invoices.cleancart');
-    Route::get('/invoices/savePrintOrder', 'InvoiceController@savePrintOrder')->name('invoices.savePrintOrder');
+
+    Route::post('/invoices/savePrintOrder', 'InvoiceController@savePrintOrder')->name('invoices.savePrintOrder');
     Route::get('/invoices/printpdf', 'InvoiceController@printpdf')->name('invoices.printpdf');
 /*
     Route::get('/invoices/cart', function () {

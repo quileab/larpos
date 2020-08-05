@@ -1,4 +1,4 @@
-<div wire:ignore.self id="ProductsModal" class="modal shadow" role="dialog" tabindex="-1">
+<div wire:ignore.self id="ProductsModal" class="modal" role="dialog" tabindex="-1">
     <div class="modal-dialog" role="document">
 
         <div class="modal-content">
@@ -33,18 +33,15 @@
                         @foreach ($products as $product)
                         <tr>
                             <td class="small text-break">
-                            <button class="btn btn-block btn-dark btn-sm text-left" 
-                                        wire:click="addToCart({{ $product->id }},{{ $quantity }},{{ $product->price }})">
-                                {{ $product->brand }}, {{ $product->description }}
-                            </button>
+                                <a href="#" wire:click="addToCart({{ $product->id }},{{ $quantity }},{{ $product->price }})">
+                                    {{ $product->brand }}, {{ $product->description }}
+                                </a>
                             </td>
                             <td>
-                                <div class="input-group">
-                                    <select name="price" class="custom-select custom-select-sm">
-                                        <option value="{{ $product->salesprice1 }}">{{ $product->salesprice1 }}</option>
-                                        <option value="{{ $product->salesprice2 }}">{{ $product->salesprice2 }}</option>
-                                    </select>
-                                </div>
+                                <select name="price" class="bg-light text-dark" style="width:100%;">
+                                    <option value="{{ $product->salesprice1 }}">{{ $product->salesprice1 }}</option>
+                                    <option value="{{ $product->salesprice2 }}">{{ $product->salesprice2 }}</option>
+                                </select>
                             </td>
                         </tr>
                         @endforeach

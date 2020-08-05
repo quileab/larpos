@@ -38,7 +38,11 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        // The next line avoid register if not GUEST
+        //$this->middleware('guest');
+        // *** Changed to *only* accept from logged ***
+        $this->middleware('auth');
+
     }
 
     /**

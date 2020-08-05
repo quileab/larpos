@@ -1,7 +1,7 @@
 {
     "name": "laravel/laravel",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "Punto de Venta y Stock en Laravel.",
     "keywords": [
         "framework",
         "laravel"

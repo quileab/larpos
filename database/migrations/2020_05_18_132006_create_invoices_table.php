@@ -31,6 +31,7 @@ class CreateInvoicesTable extends Migration
             $table->string('client_City', 30);
             $table->string('client_address', 30);
             $table->string('client_tax_Cond', 2);
+            $table->string('client_taxid', 11)->nullable(); // cuit
             $table->string('client_phone', 30);
             $table->string('client_email', 50);
             $table->char('flag', 3);

@@ -1,19 +1,28 @@
 <div>
     <div class="row">
-        <div class="col">
+        <div class="col-6">
             <div class="btn-group" role="group" aria-label="Acciones">
-                @if(session('cart'))
-                <a href="#" class="href" title="Borrar Items" wire:click="cleancart()">
-                    <button type="button" class="btn btn-warning"><i class="fas fa-trash"></i></button></a>
-                @endif
+                <button type="button" wire:click="cleancart()" class="btn btn-warning btn-sm" {{ Session::has('cart') ? '' : 'disabled' }}><i class="fas fa-trash"></i></button>
                 <a href="#" class="href">
                     <button type="button" class="btn btn-primary"><i class="fas fa-info-circle"></i></button></a>
-                @if(session('cart'))
-                <a href="{{route('invoices.savePrintOrder')}}" class="href" title="Imprimir Comprobante">
-                    <button type="button" class="btn btn-success">
-                        <i class="fas fa-print"></i> Imprimir
-                    </button></a>
-                @endif
+
+                <form action="{{route('invoices.savePrintOrder')}}" method="post" class="form-inline">
+                    @csrf
+                    <div class="input-group">
+                        <button type="submit" class="btn btn-success form-control" {{ Session::has('cart') ? '' : 'disabled' }}>
+                            <i class="fas fa-print px-3"></i>
+                        </button>
+                        <select id="larposLetter" title="Comprobante" class="form-control selectpicker" name="invoiceLetter">
+                            <option>X</option>
+                            <option>A</option>
+                            <option>B</option>
+                            <option>C</option>
+                        </select>
+                        <input id="larposPoint" class="form-control" type="number" name="invoicePoint" min="1">
+                    </div>
+                </form>
+                <button class="btn btn-primary btn-sm" onclick="setDefaultTypePoint();"><i class="fas fa-thumbtack"></i></button>
+
             </div>
         </div>
         <div class="col text-right">
@@ -24,9 +33,9 @@
         <thead>
             <tr>
                 <th scope="col">Producto</th>
-                <th scope="col">Cant.</th>
-                <th scope="col">Precio</th>
-                <th scope="col"><i class="fas fa-info text-warning"></i></th>
+                <th scope="col" class="text-center">Cant.</th>
+                <th scope="col" class="text-center">Precio</th>
+                <th scope="col" class="text-center"><small><i class="fas fa-info text-warning"></i></small></th>
             </tr>
         </thead>
         <tbody>
@@ -37,9 +46,8 @@
                 <td class="text-right">{{ $cartitem['quantity'] }}</td>
                 <td class="text-right">@qbmoney($cartitem['price'])</td>
                 <td>
-                    <button class="btn btn-primary-outline" wire:click="removefromcart({{ $key }})">
-                        <i class="fas fa-times text-danger"></i>
-                    </button>
+                    <a href="#" wire:click="removefromcart({{ $key }})">
+                        <i class="fas fa-times text-danger"></i></a>
                 </td>
             </tr>
             @endforeach
@@ -47,3 +55,22 @@
         </tbody>
     </table>
 </div>
+<script>
+    function loadDefaultTypePoint() {
+        const tipo = localStorage.getItem('qbtipo');
+        const punto = localStorage.getItem('qbpunto');
+        tipo != null ? document.getElementById("larposLetter").selectedIndex = tipo : 0;
+        punto != null ? document.getElementById("larposPoint").value = punto : 1;
+    }
+
+    function setDefaultTypePoint() {
+        localStorage.setItem('qbtipo',
+            document.getElementById("larposLetter").selectedIndex);
+        localStorage.setItem('qbpunto',
+            document.getElementById("larposPoint").value);
+        return false;
+    }
+    window.onload = function() {
+        loadDefaultTypePoint();
+    }
+</script>

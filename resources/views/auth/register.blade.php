@@ -4,11 +4,11 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+            <div class="card mt-5">
+                <div class="card-header">{{ __('Register') }} Registración Básica</div>
 
+                <form method="POST" action="{{ route('register') }}">
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
                         @csrf
 
                         <div class="form-group row">
@@ -61,15 +61,18 @@
                             </div>
                         </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
-                            </div>
+                    </div>
+                            <div class="form-group row m-0 card-footer">
+                            <div class="col-md-9">
+<small>Registro básico. Los permisos deberán ser asignados por usuarios con permisos de <strong>Administrador</strong></small>
                         </div>
-                    </form>
-                </div>
+                                <div class="col-md-3 text-right">
+                                    <button type="submit" class="btn btn-primary">
+                                        {{ __('Register') }}
+                                    </button>
+                                </div>
+                            </div>
+                </form>
             </div>
         </div>
     </div>

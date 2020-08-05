@@ -21,7 +21,7 @@ class CreateClientsTable extends Migration
             $table->index('fullname');
             $table->string('city', 20)->nullable();
             $table->string('address', 40)->nullable();
-            $table->tinyInteger('taxcond')->nullable();
+            $table->tinyInteger('taxcond')->nullable(); // tipo IVA
             $table->string('phones', 30)->nullable();
             $table->string('group', 2)->nullable();
             $table->string('taxid', 11)->nullable(); // cuit

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Role;
+use App\Warehouse;
 use App\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
@@ -33,7 +34,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-        //
+        dd('aca');
+        return view('auth.register');
     }
 
     /**
@@ -73,9 +75,11 @@ class UsersController extends Controller
         }
         //dd($user);
         $roles = Role::all();
+        $warehouses = Warehouse::all();
         return view('admin.users.edit')->with([
             'user' => $user,
-            'roles' => $roles
+            'roles' => $roles,
+            'warehouses'=> $warehouses
         ]);
     }
 
@@ -91,6 +95,7 @@ class UsersController extends Controller
         $user->roles()->sync($request->roles);
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->warehouse_id = $request->warehouse_id;
         $user->save();
 
         return redirect()->route('admin.users.index');

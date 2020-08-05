@@ -19,19 +19,45 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/{{ session('theme', 'darkly') }}/bootstrap.min.css" rel="stylesheet">
-    <!--link href="{/ { asset('css/app.css') } /}" rel="stylesheet"-->
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/{{ session('theme', 'superhero') }}/bootstrap.min.css" rel="stylesheet">
+    <!--link href="{{ asset('css/app.css') }}" rel="stylesheet"-->
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
     @livewireStyles
 </head>
 <style>
-    li>a,
-    li>a:hover {
+    a{
+        text-decoration: none !important;
+    }
+    a.side,
+    a.side:hover {
         text-decoration: none;
         display: block;
-        width: 100%;
-        height: 100%;
+        padding: 0.5rem;
+        width: 200px;
+        overflow: hidden;
+    }
+
+    .tag {
+        display: inline-flex;
+    }
+
+    .narrowside {
+        width: 40px;
+        transition: width 2s;
+    }
+
+    nav i {
+        width: 32px;
+        text-align: center;
+    }
+
+    .avatar {
+        vertical-align: middle;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: inline;
     }
 </style>
 
@@ -40,22 +66,33 @@
     <div>
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
             <div class="container-fluid">
-                <a class="btn btn-dark" data-toggle="collapse" href="#sidebar" role="button" aria-expanded="false" aria-controls="sidebar">
-                <i class="fas fa-ellipsis-v"></i>&nbsp;
+                <!--a class="btn btn-dark" data-toggle="collapse" href="#sidebar" role="button" aria-expanded="false" aria-controls="sidebar"-->
+                <!--button class="btn btn-outline-dark" onclick="document.getElementById('sidebar').classList.toggle('narrowside');"><i class="fas fa-ellipsis-v"></i></button-->
+                <a href="#" onclick="document.getElementById('sidebar').classList.toggle('narrowside');"><i class="fas fa-ellipsis-v"></i></a>
+                &nbsp;
                 </a>
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                     &nbsp;
-                    
+
                 </a>
 
                 @auth
+                <i class="pr-2 fas fa-warehouse text-warning"></i>
                 {{ Auth::user()->warehouse->name }}
-                @endauth
+
                 @if (Session::has('WH'))
-                &nbsp;<i class="fas fa-random text-warning"></i>&nbsp;
-                {{{ Session::get('warehouse') }}}&nbsp;<small>({{{ Session::get('WH') }}})</small>
+                <a href="{{ route('waredeselect') }}">
+                    <i class="fas fa-random text-warning"></i></a>
+                {{{ Session::get('warehouse') }}}&nbsp;({{{ Session::get('WH') }}})
                 @endif
+
+                @if (Session::has('clientid'))
+                <a href="{{ route('clients.deselect') }}">
+                    <i class="pl-2 fas fa-user-times text-warning"></i></a>
+                {{{ Session::get('clientname')}}} ({{{ Session::get('clientid')}}})
+                @endif
+                @endauth
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -71,16 +108,17 @@
                         <!-- Authentication Links -->
                         @guest
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('auth.Login') }}</a>
                         </li>
                         @if (Route::has('register'))
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            <a class="nav-link" href="{{ route('register') }}">{{ __('auth.Register') }}</a>
                         </li>
                         @endif
                         @else
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <img class="avatar" src="{{ Auth::user()->avatarUrl() }}">&nbsp;
                                 {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
 
@@ -121,9 +159,8 @@
             swal({
                 position: 'top-end',
                 icon: 'warning',
-                title: message,
-                showConfirmButton: true,
-            })
+                title: message
+            });
         });
     </script>
 </body>

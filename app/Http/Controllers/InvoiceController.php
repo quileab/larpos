@@ -21,36 +21,14 @@ class InvoiceController extends Controller
         return view('invoices.index', compact('invoices'));
     }
 
-    // create a new one
+    // create a new Invoice Header
     public function create(Client $client)
     {
-        if (!session()->has('clientid')){ // no hay cliente seleccionado
+        if (!session()->has('clientid')) { // no hay cliente seleccionado
             return redirect()->route('clients.index');
         }
 
-        $client = Client::find(session('clientid'));
-        $products = Product::paginate(5);
-        $invoice = new Invoice([
-            'letter' => 'X',
-            'serial' => '2',
-            'date' => Carbon::now(),
-            'salecondition' => 'C',
-            'deliverynoteserial' => '2',
-            'deliverynotenumber' => 0,
-            'seller' => auth()->user()->name,
-            'discount' => '0',
-            'client_ID' => $client->id,
-            'client_ID_type' => $client->idtype,
-            'client_ID_number' => $client->idnumber,
-            'client_Name' => $client->fullname,
-            'client_City' => $client->city,
-            'client_address' => $client->address,
-            'client_tax_Cond' => $client->taxid,
-            'client_phone' => $client->phones,
-            'client_email' => $client->email,
-            'flag' => ''
-        ]);
-        session(['invoice' => serialize($invoice)]);
+        $products = Product::first();
         return view('invoices.create', compact('products'));
     }
 
@@ -85,6 +63,7 @@ class InvoiceController extends Controller
             'client_City' => 'nullable',
             'client_address' => 'nullable',
             'client_tax_Cond' => 'nullable',
+            'client_taxid' => 'nullable',
             'client_phone' => 'nullable',
             'client_email' => 'nullable',
             'flag' => 'nullable',
@@ -106,13 +85,14 @@ class InvoiceController extends Controller
         $invoice->client_City = $request['client_City'];
         $invoice->client_address = $request['client_address'];
         $invoice->client_tax_Cond = $request['client_tax_Cond'];
+        $invoice->client_taxid = $request['client_taxid'];
         $invoice->client_phone = $request['client_phone'];
         $invoice->client_email = $request['client_email'];
         $invoice->flag = $request['flag'];
         $invoice->save();
-        Alert::toast('Created Successfully', 'success');
+        Alert::toast('Comprobante guardado', 'success');
         return redirect()->route('invoices.index')
-            ->with('message', 'Invoice created successfully');
+            ->with('message', 'Creado exitosamente!');
     }
 
     /**
@@ -199,8 +179,8 @@ class InvoiceController extends Controller
             }
         })->paginate(5); //toSql();
 
-        if ($products->count()==1){
-           $response=$this->addToCart($request);
+        if ($products->count() == 1) {
+            $response = $this->addToCart($request);
         }
         return view('invoices.create', compact('products', 'invoice') //);
         );
@@ -258,84 +238,54 @@ class InvoiceController extends Controller
         //redirect()->route('invoices.create');
     }
 
-    public function removefromcart(Request $request)
-    {
-        if ($request->id) {
-            $cart = session()->get('cart');
-            if (isset($cart[$request->id])) {
-                unset($cart[$request->id]);
-                session()->put('cart', $cart);
-            }
-            //session()->flash('success', 'Product removed successfully');
-        }
-        return redirect()->back()->with('success', 'Product Removed from cart!');
-    }
-
-    public function cleancart()
-    {
-        if (session()->get('cart')) {
-            session()->forget('cart');
-        }
-
-        return redirect()->back()->with('success', 'Product Removed from cart!');
-    }
-
     public function savePrintOrder(Request $request)
     {
+        // *** Get Warehouse ***
         if ($request->session()->has('WH')) {
-            $warehouse=session()->get('WH');
-           } else {
-            $warehouse=auth()->user()->warehouse_id;
-           }
-        $request = unserialize(session()->get('invoice'));
+            $warehouse = session()->get('WH');
+        } else {
+            $warehouse = auth()->user()->warehouse_id;
+        }
+
+        // *** Get Client Data ***
+        $client = Client::find(session('clientid'));
+
+        // *** Get Last Invoice ***
         $count = Invoice::where('id', '>', '0')->count();
-        /*
-        $this->validate($request, [
-            'letter' => 'required',
-            'serial' => 'required',
-            'number' => 'required',
-            'date' => 'required',
-            'salecondition' => 'nullable',
-            'deliverynoteserial' => 'nullable',
-            'deliverynotenumber' => 'nullable',
-            'seller' => 'required',
-            'discount' => 'nullable',
-            'client_ID' => 'nullable',
-            'client_ID_type' => 'nullable',
-            'client_Name' => 'nullable',
-            'client_City' => 'nullable',
-            'client_address' => 'nullable',
-            'client_tax_Cond' => 'nullable',
-            'client_phone' => 'nullable',
-            'client_email' => 'nullable',
-            'flag' => 'nullable',
-        ]);
-*/
+
+        // *** Validation should be here ***
+
+        // *** Set Invoice Header Data ***
         $invoice = new Invoice();
-        $invoice->letter = $request['letter'];
-        $invoice->serial = $request['serial'];
-        $invoice->number = $count; //$request['number'];
-        $invoice->date = $request['date'];
-        $invoice->salecondition = $request['salecondition'];
-        $invoice->deliverynoteserial = $request['deliverynoreserial'] == null ? $request['serial'] : $request['deliverynoreserial'];
-        $invoice->deliverynotenumber = $request['deliverynotenumber'];
-        $invoice->seller = $request['seller'];
-        $invoice->discount = $request['discount'];
-        $invoice->client_ID = $request['client_ID'];
-        $invoice->client_ID_type = $request['client_ID_type'];
-        $invoice->client_ID_number = $request['client_ID_number'] == null ? $request['client_ID'] : $request['client_ID_number'];
-        $invoice->client_Name = $request['client_Name'];
-        $invoice->client_City = $request['client_City'];
-        $invoice->client_address = $request['client_address'];
-        $invoice->client_tax_Cond = $request['client_tax_Cond'] == null ? '5' : $request['client_tax_Cond'];
-        $invoice->client_phone = $request['client_phone'];
-        $invoice->client_email = $request['client_email'];
-        $invoice->flag = $request['flag'];
+        $invoice->letter = $request->invoiceLetter;
+        $invoice->serial = $request->invoicePoint;
+        $invoice->number = $count;
+        $invoice->date = Carbon::now();
+        $invoice->salecondition = 'C';
+        $invoice->deliverynoteserial = '2';
+        $invoice->deliverynotenumber = '0';
+        $invoice->seller = auth()->user()->name;
+        $invoice->discount = '0';
+        $invoice->client_ID = $client->id;
+        $invoice->client_ID_type = $client->idtype;
+        $invoice->client_ID_number = $client->idnumber;
+        $invoice->client_Name = $client->fullname;
+        $invoice->client_City = $client->city;
+        $invoice->client_address = $client->address;
+        $invoice->client_tax_Cond = $client->taxcond;
+        $invoice->client_taxid = $client->taxid;
+        $invoice->client_phone = $client->phones;
+        $invoice->client_email = $client->email;
+        $invoice->flag = '';
+        //dd($invoice);
         $invoice->save();
 
-        $cart = session()->get('cart');
+        // *** Get Last "Unique" ID of Invoice Record *** 
         $id = DB::getPdo()->lastInsertId();
 
+        // *** ---- Save Invoice Cart Items ---- ***
+        $cart = session()->get('cart');
+        // *** ------ Save each Cart Item ------ ***
         foreach ($cart as $key => $cartitem) {
             $detail = new Invoicesitems();
             $product = Product::find($key);
@@ -351,20 +301,21 @@ class InvoiceController extends Controller
             $detail->tax = $product->tax;
             $detail->discount = $product->discount;
             $detail->save();
-            // ------- Update Stock --------
-            $stock=Whprodquantity::where('warehouse_id',$warehouse)->where('product_id',$key)->get();
+            // ***------- Update Stock --------***
+            $stock = Whprodquantity::where('warehouse_id', $warehouse)->where('product_id', $key)->get();
             // Toma la Cantidad si existe en Depósito
-            $quantity = ($stock->count()>0) ? $quantity=$stock[0]->quantity : 0;
-            if($detail->quantity>=$quantity){
-                $quantity=0;
-            }else{
-                $quantity-=$detail->quantity;
+            $quantity = ($stock->count() > 0) ? $quantity = $stock[0]->quantity : 0;
+            if ($detail->quantity >= $quantity) {
+                $quantity = 0;
+            } else {
+                $quantity -= $detail->quantity;
             }
-            if ($stock->count()>0) { // Si en depósito existe esa mercadería la actualiza
-            $stock[0]->quantity=$quantity;
-            $stock[0]->save();
+            if ($stock->count() > 0) { // Si en depósito existe esa mercadería la actualiza
+                $stock[0]->quantity = $quantity;
+                $stock[0]->save();
             }
         }
+        // ***------- Clear Cart & Client --------***
         if (session()->get('cart')) {
             session()->forget('cart');
         }
@@ -380,22 +331,22 @@ class InvoiceController extends Controller
 
     public function printpdf(Request $request)
     {
-        $letter=$request->session()->get('invoice')->letter;
-        $serial=$request->session()->get('invoice')->serial;
-        $number=$request->session()->get('invoice')->number;
-        $id=$request->session()->get('invoice')->id;
+        $letter = $request->session()->get('invoice')->letter;
+        $serial = $request->session()->get('invoice')->serial;
+        $number = $request->session()->get('invoice')->number;
+        $id = $request->session()->get('invoice')->id;
 
-        $invoice=Invoice::find($id);
-        $invoicesitems=Invoicesitems::where('invoices_id',$id)->get();
+        $invoice = Invoice::find($id);
+        $invoicesitems = Invoicesitems::where('invoices_id', $id)->get();
 
         $pdf = app('dompdf.wrapper');
 
         $pdf->loadView('invoices.pdf', compact('invoice', 'invoicesitems'))
             ->setPaper('a4');
 
-        $output=$pdf->output();
-        $filename=$letter.'-'.$serial.'-'.$number.'.pdf';
-        file_put_contents($filename,$output);
+        $output = $pdf->output();
+        $filename = $letter . '-' . $serial . '-' . $number . '.pdf';
+        file_put_contents($filename, $output);
         //return $pdf->stream();
         // return $pdf->download('comprobante.pdf');
         return redirect()->route('clients.index')->with(compact('filename'));

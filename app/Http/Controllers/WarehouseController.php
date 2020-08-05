@@ -103,7 +103,7 @@ class WarehouseController extends Controller
         $warehouse = DB::table('warehouses')->where('id', '=', $id)->get();
         session(['warehouse' => $warehouse[0]->name]);
         session(['WH' => $id]);
-        return redirect()->route('dashboard');
+        return redirect()->back();
     }
     public function waredeselect(Request $request)
     {
@@ -111,6 +111,6 @@ class WarehouseController extends Controller
             $request->session()->forget('warehouse');
             $request->session()->forget('WH');
         }
-        return redirect()->route('dashboard');
+        return redirect()->back();
     }
 }

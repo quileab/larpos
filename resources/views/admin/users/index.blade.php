@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-4"><h4>Users</h4></div>
+                        <div class="col-4"><h4><i class="fas fa-users"></i></h4></div>
                         <div class="col-6">search:</div>
                         <div class="col-2">
                         @if (Route::has('register'))
